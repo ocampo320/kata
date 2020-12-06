@@ -1,0 +1,17 @@
+
+h
+java:S1871"MThis branch's code block is the same as the block for the branch on line 125.(ëÎ¦Ïşÿÿÿÿ
+O
+java:S49736"9Use the "equals" method if value comparison was intended.(ÖŠ…’
+U
+java:S1118":Add a private constructor to hide the implicit public one.(–ìÓùÿÿÿÿ
+w
+java:S1450"\Remove the "ANTERIOR_BONO" field and declare it as a local variable in the relevant methods.(§ÆÂÌıÿÿÿÿ
+m
+java:S3776"RRefactor this method to reduce its Cognitive Complexity from 17 to the 15 allowed.(òï¯øÿÿÿÿ
+Z
+java:S3358r"DExtract this nested ternary operation into an independent statement.(Ã¼”¡
+s
+java:S3008"XRename this field "ANTERIOR_BONO" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(§ÆÂÌıÿÿÿÿ
+_
+java:S3358q"DExtract this nested ternary operation into an independent statement.(ªÔùœşÿÿÿÿ

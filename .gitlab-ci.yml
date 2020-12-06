@@ -1,0 +1,27 @@
+
+image: maven:3.6.3-adoptopenjdk-11
+
+variables:
+  MAVEN_OPTS: "-Dhttps.protocols=TLSv1.2 -Dmaven.repo.local=$CI_PROJECT_DIR/.m2/repository -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=WARN -Dorg.slf4j.simpleLogger.showDateTime=true -Djava.awt.headless=true"
+  MAVEN_CLI_OPTS: "--batch-mode --errors --fail-at-end --show-version -DinstallAtEnd=true -DdeployAtEnd=true"
+  SONAR_TOKEN: "00ff74edf51ba6ea7405c66a907af69029a3197e"
+  SONAR_HOST_URL: "https://sonarcloud.io/"
+  GIT_DEPTH: 0
+
+cache:
+  paths:
+    - .m2/repository
+
+stages:
+  - verify
+  - check
+
+verify:
+  stage: verify
+  script:
+    - 'mvn $MAVEN_CLI_OPTS verify sonar:sonar '
+  artifacts:
+    name: "demo-$CI_BUILD_ID-$CI_BUILD_REF"
+    paths:
+      - target/*.jar
+    expire_in: 1 day
