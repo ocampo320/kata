@@ -1,12 +1,16 @@
 package com.example;
 
 
+import com.example.domain.business.core.CuponUseCaseImpl;
+import com.example.domain.business.model.CouponDetailDto;
+import com.example.domain.business.model.ExperienceErrorsEnum;
+import com.example.domain.business.model.FileCSVEnum;
+import com.example.domain.business.model.ValidateCouponEnum;
 import reactor.core.publisher.Flux;
 import reactor.util.function.Tuple2;
 import reactor.util.function.Tuples;
 
 import java.io.*;
-import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Matcher;
@@ -62,12 +66,12 @@ public class HelperKata {
                                     bonoForObject = null;
                                 }
 
-                                return CouponDetailDto.aCouponDetailDto()
-                                        .withCode(bonoForObject)
-                                        .withDueDate(dateValidated)
-                                        .withNumberLine(counter.incrementAndGet())
-                                        .withMessageError(errorMessage)
-                                        .withTotalLinesFile(1)
+                                return CouponDetailDto.builder()
+                                        .code(bonoForObject)
+                                        .dueDate(dateValidated)
+                                        .numberLine(counter.incrementAndGet())
+                                        .messageError(errorMessage)
+                                        .totalLinesFile(1)
                                         .build();
                             }).collect(Collectors.toList())
             );
@@ -119,14 +123,7 @@ public class HelperKata {
 
     public static boolean validateDateIsMinor(String dateForValidate) {
         try {
-            SimpleDateFormat sdf = new SimpleDateFormat(FileCSVEnum.PATTERN_SIMPLE_DATE_FORMAT.getId());
-            Date dateActual = sdf.parse(sdf.format(new Date()));
-            Date dateCompare = sdf.parse(dateForValidate);
-            if (dateCompare.compareTo(dateActual) < 0) {
-                return true;
-            } else if (dateCompare.compareTo(dateActual) == 0) {
-                return true;
-            }
+            if (CuponUseCaseImpl.findFile(dateForValidate)) return true;
         } catch (Exception e) {
             e.printStackTrace();
             return false;
