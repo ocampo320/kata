@@ -6,10 +6,11 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.util.Date;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 class CuponUseCaseImplTest {
@@ -26,10 +27,17 @@ class CuponUseCaseImplTest {
 
     @Test
     void TestUseCase(){
-        CouponDetailDto couponDetailDto= getCouponDetailDto();
         Flux<CouponDetailDto> result=underTest.createCupon(file);
+        CouponDetailDto couponDetailDto1 = getCouponDetailDto();
         StepVerifier.create(result)
-                .expectNext(getCouponDetailDto());
+                .expectNextMatches(couponDetailDto -> {
+                    assertEquals(couponDetailDto1.getDueDate(),couponDetailDto.getDueDate());
+                    return  false;
+
+                })
+                .expectComplete()
+                .verifyLater();
+
 
 
     }
@@ -42,7 +50,5 @@ class CuponUseCaseImplTest {
                 .numberLine(1)
                 .build();
     }
-
-
 
 }
