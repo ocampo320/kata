@@ -103,7 +103,7 @@ public class CuponUseCaseImpl implements CuponUsecase {
 
     }
 
-
+//Todo: pendiente por pruebas de integracionm
     private Mono<Boolean> validateDateRegex(String dateForValidate) {
         try {
             String regex = FileCSVEnum.PATTERN_DATE_DEFAULT.getId();
@@ -117,8 +117,16 @@ public class CuponUseCaseImpl implements CuponUsecase {
         return Mono.just(true);
 
     }
+    //Todo:pendiente por implementar
+/**
+    private Mono<Boolean> validateDateIsMinor(String dateForValidate) {
+        try {
+            if (cuponesRepository.findFile(dateForValidate)) return Mono.just(true);
+        } catch (Exception ignored) {
+            log.warning(ExperienceErrorsEnum.FILE_DATE_IS_MINOR_OR_EQUALS.toString());
+        }
+        return Mono.just(false);
+    }
 
-
-
-
+**/
 }
