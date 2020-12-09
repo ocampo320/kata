@@ -57,8 +57,8 @@ class CuponUseCaseImplTest {
                 .expectComplete()
                 .verifyLater();
 
-
         verify(cuponesRepository).findFile(new Date().toString());
+        verify(cuponesRepository).validateDateRegex(new Date().toString());
         verify(cuponesRepository, times(1)).validateIsExist(codes, getCouponDetailDto2());
 
 
@@ -72,11 +72,25 @@ class CuponUseCaseImplTest {
                 .expectNextMatches(couponDetailDto -> {
                     assertEquals(couponDetailDto1, couponDetailDto);
                     assertEquals(couponDetailDto1.getCode(), couponDetailDto1.getCode());
+                    assertEquals(couponDetailDto1.getDueDate(),(couponDetailDto1.getDueDate()));
                     return false;
                 })
                 .expectComplete()
                 .verifyLater();
 
+
+    }
+    @Test
+    void TestMessageError(){
+        Flux<Boolean> result = underTest.createCupon(file);
+        CouponDetailDto couponDetailDto1 = getCouponDetailDto();
+        StepVerifier.create(result)
+                .consumeErrorWith(throwable -> {
+                    assertEquals(ExperienceErrorsEnum.class, throwable.getMessage());
+                    assertEquals("FILE_DATE_IS_MINOR_OR_EQUALS",throwable.getMessage());
+
+                })
+                .verifyLater();
 
     }
 

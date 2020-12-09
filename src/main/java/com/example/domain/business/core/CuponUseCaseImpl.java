@@ -52,8 +52,9 @@ public class CuponUseCaseImpl implements CuponUsecase {
                                 .totalLinesFile(1)
                                 .build())
                         .flatMap(couponDetailDto -> errorOfCoupon(codes, couponDetailDto))
-                        .flatMap(couponDetailDto -> validateDateRegex(couponDetailDto.getDueDate()))
-                       );
+                        .flatMap(couponDetailDto -> validateIsEmpty(couponDetailDto))
+                        .flatMap(couponDetailDto -> cuponesRepository.validateDateRegex(couponDetailDto.getDueDate())
+                                .flatMap(aBoolean -> validateDateIsMinor(couponDetailDto.getDueDate()))));
 
 
     }
@@ -103,22 +104,8 @@ public class CuponUseCaseImpl implements CuponUsecase {
 
     }
 
-//Todo: pendiente por pruebas de integracionm
-    private Mono<Boolean> validateDateRegex(String dateForValidate) {
-        try {
-            String regex = FileCSVEnum.PATTERN_DATE_DEFAULT.getId();
-            Pattern pattern = Pattern.compile(regex);
-            Matcher matcher = pattern.matcher(dateForValidate);
-            return Mono.just(matcher.matches());
-        } catch (Exception e) {
-            log.warning(ExperienceErrorsEnum.FILE_ERROR_DATE_PARSE.toString());
+    //Todo: pendiente por pruebas de integracion
 
-        }
-        return Mono.just(true);
-
-    }
-    //Todo:pendiente por implementar
-/**
     private Mono<Boolean> validateDateIsMinor(String dateForValidate) {
         try {
             if (cuponesRepository.findFile(dateForValidate)) return Mono.just(true);
@@ -128,5 +115,5 @@ public class CuponUseCaseImpl implements CuponUsecase {
         return Mono.just(false);
     }
 
-**/
+
 }
