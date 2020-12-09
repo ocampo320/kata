@@ -1,4 +1,5 @@
 package com.example.domain.business.model;
+
 import java.util.Arrays;
 
 
@@ -15,7 +16,7 @@ public enum ExperienceEnum {
     }
 
     public static String nameFromId(String id) {
-        return (String)Arrays.stream(values()).filter((dse) -> {
+        return (String) Arrays.stream(values()).filter((dse) -> {
             return dse.getId().contentEquals(id);
         }).map(Enum::name).findFirst().orElseThrow(() -> {
             return new RuntimeException("OBJECT_STATUS_NOT_VALID");

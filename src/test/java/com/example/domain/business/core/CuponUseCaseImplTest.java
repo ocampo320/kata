@@ -6,7 +6,6 @@ import com.example.domain.business.usecase.CuponUsecase;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-import org.objenesis.instantiator.basic.NewInstanceInstantiator;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
@@ -26,11 +25,11 @@ class CuponUseCaseImplTest {
 
     private CuponesRepository cuponesRepository;
     private CuponUseCaseImpl underTest;
-   private String file = "Q09ESUdPO0ZFQ0hBX1ZFTkNJQ0lNCjExMTE7MDEvMDEvMjAxMQozMzMzOzE4LzA5LzIwCjQ0NDQ7MTgvMDkvMjAKMTExMTsxMy8wNy8yMDExCjExMTE7MTMvMTIvMjAyMgoxMTExOzE4LzEzLzIwMjIKMjIyMjsxOC8wOS8yMAo";
+    private String file = "Q09ESUdPO0ZFQ0hBX1ZFTkNJQ0lNCjExMTE7MDEvMDEvMjAxMQozMzMzOzE4LzA5LzIwCjQ0NDQ7MTgvMDkvMjAKMTExMTsxMy8wNy8yMDExCjExMTE7MTMvMTIvMjAyMgoxMTExOzE4LzEzLzIwMjIKMjIyMjsxOC8wOS8yMAo";
 
     @BeforeEach
     void setUp() {
-        cuponesRepository=Mockito.mock(CuponesRepository.class);
+        cuponesRepository = Mockito.mock(CuponesRepository.class);
         cuponUsecase = Mockito.mock(CuponUsecase.class);
         underTest = new CuponUseCaseImpl(cuponesRepository);
 
@@ -44,12 +43,13 @@ class CuponUseCaseImplTest {
         codes.add("2");
         codes.add("3");
         Mockito.when(cuponesRepository.findFile(new Date().toString())).thenReturn(true);
+        Mockito.when(cuponesRepository.validateIsExist(codes,getCouponDetailDto())).thenReturn(Mono.just(getCouponDetailDto2()));
         Flux<CouponDetailDto> result = underTest.createCupon(file);
         CouponDetailDto couponDetailDto1 = getCouponDetailDto2();
         StepVerifier.create(result)
                 .expectNextMatches(couponDetailDto -> {
 
-                    assertEquals(codes, couponDetailDto1.getCode());
+                    assertEquals(codes.iterator().next(), couponDetailDto1.getCode());
                     return false;
 
                 })
@@ -57,28 +57,32 @@ class CuponUseCaseImplTest {
                 .expectComplete()
                 .verifyLater();
 
+
         verify(cuponesRepository).findFile(new Date().toString());
+        verify(cuponesRepository,times(1)).validateIsExist(codes,getCouponDetailDto2());
 
 
     }
 
     @Test
-    void TestUseCase(){
-        Flux<CouponDetailDto> result=underTest.createCupon(file);
+    void TestUseCase() {
+        Flux<CouponDetailDto> result = underTest.createCupon(file);
         CouponDetailDto couponDetailDto1 = getCouponDetailDto();
         StepVerifier.create(result)
                 .expectNextMatches(couponDetailDto -> {
-                    assertEquals(couponDetailDto1.getDueDate(),couponDetailDto.getDueDate());
-                    return  false;
+                    assertEquals(couponDetailDto1.getDueDate(), couponDetailDto.getDueDate());
+                    return false;
+
 
                 })
                 .expectComplete()
                 .verifyLater();
 
 
-
     }
-    private CouponDetailDto getCouponDetailDto(){
+
+
+    private CouponDetailDto getCouponDetailDto() {
         return CouponDetailDto.builder()
                 .totalLinesFile(12)
                 .dueDate(new Date().toString())
@@ -88,15 +92,25 @@ class CuponUseCaseImplTest {
                 .build();
     }
 
-    private CouponDetailDto getCouponDetailDto2(){
+    private CouponDetailDto getCouponDetailDto2() {
         return CouponDetailDto.builder()
                 .totalLinesFile(2)
                 .dueDate(null)
                 .code("1")
-                .messageError("FILE_ERROR_CODE_DUPLICATE")
+                .messageError("FILE_ERROR_DATE_PARSE")
                 .numberLine(1)
                 .build();
     }
+    private CouponDetailDto getCouponDetailDto3() {
+        return CouponDetailDto.builder()
+                .totalLinesFile(3)
+                .dueDate(null)
+                .code("4444")
+                .messageError("FILE_ERROR_DATE_PARSE")
+                .numberLine(1)
+                .build();
+    }
+
 
 
 }

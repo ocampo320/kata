@@ -10,13 +10,12 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Set;
 
-public class CuponRepositoryImpl implements  CuponesRepository{
-
+public class CuponRepositoryImpl implements CuponesRepository {
 
 
     @Override
     public boolean findFile(String dateForValidate) throws ParseException {
-         SimpleDateFormat sdf = new SimpleDateFormat(FileCSVEnum.PATTERN_SIMPLE_DATE_FORMAT.getId());
+        SimpleDateFormat sdf = new SimpleDateFormat(FileCSVEnum.PATTERN_SIMPLE_DATE_FORMAT.getId());
         Date dateActual = sdf.parse(sdf.format(new Date()));
         Date dateCompare = sdf.parse(dateForValidate);
         if (dateCompare.compareTo(dateActual) < 0) {
@@ -25,6 +24,14 @@ public class CuponRepositoryImpl implements  CuponesRepository{
             return true;
         }
         return false;
+    }
+
+    @Override
+    public Mono<CouponDetailDto> validateIsExist(Set<String> codes, CouponDetailDto couponDetailDto) {
+        if (!codes.add(couponDetailDto.getCode())) {
+            Mono.just(ExperienceErrorsEnum.FILE_ERROR_CODE_DUPLICATE);
+        }
+        return Mono.empty();
     }
 
 }
