@@ -1,18 +1,16 @@
 
-r	java:S117$"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ÚÌ¤éûÿÿÿÿ8ÏŠÔã.
-X
-java:S1854 ";Remove this useless assignment to local variable "counter".(êƒÄ¼8ÑÊòÒã.
+b
+java:S1854"@Remove this useless assignment to local variable "previousBono".(é«Àôıÿÿÿÿ8ÑÊòÒã.
+N
+java:S1612A",Replace this lambda with a method reference.(Úœ‘ƒüÿÿÿÿ8ÃƒÍêã.
 p
 java:S1871„"MThis branch's code block is the same as the block for the branch on line 130.(ëÎ¦Ïşÿÿÿÿ8×âÓã.
-O
-java:S1144?"2Remove this unused private "errorOfCoupon" method.(÷¶Á8¶ÛáÑã.
+m	java:S117 "QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ŒÑˆ­8ÏŠÔã.
 S
-java:S1481!"1Remove this unused "previousBono" local variable.(é«Àôıÿÿÿÿ8ÑÊòÒã.
-b
-java:S1854!"@Remove this useless assignment to local variable "previousBono".(é«Àôıÿÿÿÿ8ÑÊòÒã.
-[
-java:S1854"9Remove this useless assignment to local variable "codes".(øÌŸ¥şÿÿÿÿ8ÑÊòÒã.
-L
-java:S1481"*Remove this unused "codes" local variable.(øÌŸ¥şÿÿÿÿ8ÑÊòÒã.
+java:S1481"1Remove this unused "previousBono" local variable.(é«Àôıÿÿÿÿ8ÑÊòÒã.
+X
+java:S1854";Remove this useless assignment to local variable "counter".(êƒÄ¼8ÑÊòÒã.
+Q
+java:S3740?"/Provide the parametrized type for this generic.(·¹ğãûÿÿÿÿ8ä¬‰ìã.
 I
-java:S1481 ",Remove this unused "counter" local variable.(êƒÄ¼8ÑÊòÒã.
+java:S1481",Remove this unused "counter" local variable.(êƒÄ¼8ÑÊòÒã.

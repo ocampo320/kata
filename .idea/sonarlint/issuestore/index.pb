@@ -1,12 +1,8 @@
 
-Y
-)src/main/java/com/example/HelperKata.java,b/b/bbf254b4ce03a7e72e65b727b3e9dcb53e0a8ade
 9
 	README.md,8/e/8ec9a00bfd09b3190ac6b22251dbb1aa95a0579d
 7
 pom.xml,4/4/442292b8a7efeabbe4cc176709b833b1792140ec
-]
--src/test/java/com/example/HelperKataTest.java,6/7/671061027379eb8b4ade95f440ce3f8d9e24a232
 t
 Dsrc/main/java/com/example/domain/business/model/CouponDetailDto.java,b/7/b738ef3c871c65a69b135d0a653653048b0cb7c0
 s
@@ -23,3 +19,7 @@ n
 >src/main/java/com/example/domain/business/model/ItemModel.java,b/9/b9b42a7d9bbaa63b661a2d486c1a464d1fadd694
 t
 Dsrc/main/java/com/example/domain/business/core/CuponUseCaseImpl.java,4/f/4f6d2919ec6a8d2901211fa05f1e5a19b189dc1b
+>
+.gitlab-ci.yml,5/8/587d266bb27a4dc3022bbed44dfa19849df3044c
+x
+Hsrc/test/java/com/example/domain/business/core/CuponUseCaseImplTest.java,3/0/3081681258ac487af92130930c003e854bb594fa

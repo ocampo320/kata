@@ -1,7 +1,9 @@
 package com.example.domain.business.core;
 
+import com.example.domain.business.infrastructure.CuponesRepository;
 import com.example.domain.business.model.*;
 import com.example.domain.business.usecase.CuponUsecase;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -19,8 +21,10 @@ import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
 @Log
+@RequiredArgsConstructor
 public class CuponUseCaseImpl implements CuponUsecase {
 
+private final CuponesRepository cuponesRepository;
 
     @Override
     public Flux<CouponDetailDto> createCupon(final String fileBase64) {
@@ -98,6 +102,7 @@ public class CuponUseCaseImpl implements CuponUsecase {
             Mono.just(ExperienceErrorsEnum.FILE_ERROR_CODE_DUPLICATE);
         }
         return Mono.empty();
+
     }
 
    private Mono<Boolean> validateDateRegex(String dateForValidate) {
@@ -116,23 +121,13 @@ public class CuponUseCaseImpl implements CuponUsecase {
 
     private Mono<Boolean> validateDateIsMinor(String dateForValidate) {
         try {
-            if (findFile(dateForValidate)) return Mono.just(true);
+            if (cuponesRepository.findFile(dateForValidate)) return Mono.just(true);
         } catch (Exception ignored) {
             log.warning(ExperienceErrorsEnum.FILE_DATE_IS_MINOR_OR_EQUALS.toString());
         }
         return Mono.just(false);
     }
 
-    public static boolean findFile(String dateForValidate) throws ParseException {
-        SimpleDateFormat sdf = new SimpleDateFormat(FileCSVEnum.PATTERN_SIMPLE_DATE_FORMAT.getId());
-        Date dateActual = sdf.parse(sdf.format(new Date()));
-        Date dateCompare = sdf.parse(dateForValidate);
-        if (dateCompare.compareTo(dateActual) < 0) {
-            return true;
-        } else if (dateCompare.compareTo(dateActual) == 0) {
-            return true;
-        }
-        return false;
-    }
+
 
 }
