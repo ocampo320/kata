@@ -23,3 +23,7 @@ Dsrc/main/java/com/example/domain/business/core/CuponUseCaseImpl.java,4/f/4f6d2
 .gitlab-ci.yml,5/8/587d266bb27a4dc3022bbed44dfa19849df3044c
 x
 Hsrc/test/java/com/example/domain/business/core/CuponUseCaseImplTest.java,3/0/3081681258ac487af92130930c003e854bb594fa
+
+Osrc/main/java/com/example/domain/business/infrastructure/CuponesRepository.java,2/f/2f3de0438f01808b0092462b74b84887fe7f26eb
+Å
+Qsrc/main/java/com/example/domain/business/infrastructure/CuponRepositoryImpl.java,3/6/369a2415d9f2bbb866ccb15f8485c02f4882c2df

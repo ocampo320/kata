@@ -2,6 +2,8 @@ package com.example.domain.business.core;
 
 import com.example.domain.business.infrastructure.CuponesRepository;
 import com.example.domain.business.model.CouponDetailDto;
+import com.example.domain.business.model.ExperienceErrorsEnum;
+import com.example.domain.business.model.ItemModel;
 import com.example.domain.business.usecase.CuponUsecase;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -16,12 +18,11 @@ import java.util.HashSet;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 
 class CuponUseCaseImplTest {
-    private CuponUsecase cuponUsecase;
+
 
     private CuponesRepository cuponesRepository;
     private CuponUseCaseImpl underTest;
@@ -30,7 +31,6 @@ class CuponUseCaseImplTest {
     @BeforeEach
     void setUp() {
         cuponesRepository = Mockito.mock(CuponesRepository.class);
-        cuponUsecase = Mockito.mock(CuponUsecase.class);
         underTest = new CuponUseCaseImpl(cuponesRepository);
 
     }
@@ -45,7 +45,8 @@ class CuponUseCaseImplTest {
         Mockito.when(cuponesRepository.findFile(new Date().toString())).thenReturn(true);
         Mockito.when(cuponesRepository.validateIsExist(codes,getCouponDetailDto())).thenReturn(Mono.just(getCouponDetailDto2()));
         Flux<CouponDetailDto> result = underTest.createCupon(file);
-        CouponDetailDto couponDetailDto1 = getCouponDetailDto2();
+        CouponDetailDto couponDetailDto1 = getCouponDetailDto3();
+
         StepVerifier.create(result)
                 .expectNextMatches(couponDetailDto -> {
 
@@ -70,10 +71,29 @@ class CuponUseCaseImplTest {
         CouponDetailDto couponDetailDto1 = getCouponDetailDto();
         StepVerifier.create(result)
                 .expectNextMatches(couponDetailDto -> {
-                    assertEquals(couponDetailDto1.getDueDate(), couponDetailDto.getDueDate());
+                    assertEquals(couponDetailDto1, couponDetailDto);
+                    assertEquals(couponDetailDto.getCode(),couponDetailDto1.getCode());
                     return false;
+                })
+                .expectComplete()
+                .verifyLater();
 
 
+    }
+    @Test
+    void TestUseCase3() {
+        Set<String> codes = new HashSet<>();
+        codes.add("1");
+        codes.add("2");
+        codes.add("3");
+        Flux<CouponDetailDto> result = underTest.createCupon(file);
+        CouponDetailDto couponDetailDto1 = getCouponDetailDto5();
+        when(cuponesRepository.validateIsExist(codes,couponDetailDto1)).thenReturn(Mono.just(getCouponDetailDto2()));
+        StepVerifier.create(result)
+                .expectNextMatches(throwable -> {
+                    assertEquals(ExperienceErrorsEnum.class,throwable.getClass());
+                    assertEquals("1",codes.iterator().next());
+                    return true;
                 })
                 .expectComplete()
                 .verifyLater();
@@ -81,6 +101,14 @@ class CuponUseCaseImplTest {
 
     }
 
+
+    private ItemModel getItemMode(){
+        return ItemModel.builder()
+                .date(new Date().toString())
+                .bono("bono")
+                .build();
+
+    }
 
     private CouponDetailDto getCouponDetailDto() {
         return CouponDetailDto.builder()
@@ -106,6 +134,23 @@ class CuponUseCaseImplTest {
                 .totalLinesFile(3)
                 .dueDate(null)
                 .code("4444")
+                .messageError("FILE_ERROR_DATE_PARSE")
+                .numberLine(1)
+                .build();
+    }    private CouponDetailDto getCouponDetailDto4() {
+        return CouponDetailDto.builder()
+                .totalLinesFile(0)
+                .dueDate(null)
+                .code("1")
+                .messageError("FILE_ERROR_CODE_DUPLICATE")
+                .numberLine(0)
+                .build();
+    }
+    private CouponDetailDto getCouponDetailDto5() {
+        return CouponDetailDto.builder()
+                .totalLinesFile(2)
+                .dueDate(null)
+                .code("1")
                 .messageError("FILE_ERROR_DATE_PARSE")
                 .numberLine(1)
                 .build();

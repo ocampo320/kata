@@ -1,16 +1,11 @@
 
-b
-java:S1854"@Remove this useless assignment to local variable "previousBono".(é«Àôıÿÿÿÿ8ÑÊòÒã.
-N
-java:S1612A",Replace this lambda with a method reference.(Úœ‘ƒüÿÿÿÿ8ÃƒÍêã.
-p
-java:S1871„"MThis branch's code block is the same as the block for the branch on line 130.(ëÎ¦Ïşÿÿÿÿ8×âÓã.
-m	java:S117 "QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ŒÑˆ­8ÏŠÔã.
-S
-java:S1481"1Remove this unused "previousBono" local variable.(é«Àôıÿÿÿÿ8ÑÊòÒã.
-X
-java:S1854";Remove this useless assignment to local variable "counter".(êƒÄ¼8ÑÊòÒã.
+m	java:S117."QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ŒÑˆ­8ÏŠÔã.
 Q
-java:S3740?"/Provide the parametrized type for this generic.(·¹ğãûÿÿÿÿ8ä¬‰ìã.
-I
-java:S1481",Remove this unused "counter" local variable.(êƒÄ¼8ÑÊòÒã.
+java:S3740J"/Provide the parametrized type for this generic.(·¹ğãûÿÿÿÿ8ƒ§ğ¨ä.
+e
+java:S1128"HRemove this unused import 'java.util.concurrent.atomic.AtomicReference'.(×‡µó8ôğò¨ä.
+N
+java:S1612L",Replace this lambda with a method reference.(Úœ‘ƒüÿÿÿÿ8Ëê¨ä.
+h
+java:S1128"FRemove this unused import 'java.util.concurrent.atomic.AtomicInteger'.(¿êäœøÿÿÿÿ8¯ò¨ä.
+]	java:S125\"<This block of commented-out lines of code should be removed.(–ä¬œüÿÿÿÿ8°Ù„©ä.

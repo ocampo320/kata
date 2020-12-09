@@ -57,18 +57,30 @@ public class CuponUseCaseImpl implements CuponUsecase {
 
     private Mono<ItemModel> createItemModel(String line) {
         var options = Optional.of(List.of(line.split(FileCSVEnum.CHARACTER_DEFAULT.getId())));
-        var bono = options.filter(colums -> !colums.isEmpty())
-                .map(colums -> colums.get(0))
-                .orElse("EMPTY_STRING");
+        String bono = getBono(options);
 
-        var date = options.filter(colums -> !colums.isEmpty() && colums.size() > 1)
-                .map(colums -> colums.get(1))
-                .orElse("EMPTY_STRING");
+        String date = getDate(options);
 
         return Mono.just(ItemModel.builder()
                 .bono(bono)
                 .date(date)
                 .build());
+    }
+
+
+    private String getBono(Optional<List<String>> options) {
+        var bono = options.filter(colums -> !colums.isEmpty())
+                .map(colums -> colums.get(0))
+                .orElse("EMPTY_STRING");
+        return bono;
+    }
+
+
+    private String getDate(Optional<List<String>> options) {
+        var date = options.filter(colums -> !colums.isEmpty() && colums.size() > 1)
+                .map(colums -> colums.get(1))
+                .orElse("EMPTY_STRING");
+        return date;
     }
 
     private Mono errorOfCoupon(Set<String> codes, CouponDetailDto couponDetailDto) {
@@ -89,13 +101,7 @@ public class CuponUseCaseImpl implements CuponUsecase {
 
     }
 
-     /*Mono<CouponDetailDto> validateIsExist(Set<String> codes, CouponDetailDto couponDetailDto) {
-        if (!codes.add(couponDetailDto.getCode())) {
-            Mono.just(ExperienceErrorsEnum.FILE_ERROR_CODE_DUPLICATE);
-        }
-        return Mono.empty();
 
-    }*/
 
     private Mono<Boolean> validateDateRegex(String dateForValidate) {
         try {
