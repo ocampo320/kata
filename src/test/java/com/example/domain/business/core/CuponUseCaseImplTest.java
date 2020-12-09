@@ -44,7 +44,7 @@ class CuponUseCaseImplTest {
         codes.add("3");
         Mockito.when(cuponesRepository.findFile(new Date().toString())).thenReturn(true);
         Mockito.when(cuponesRepository.validateIsExist(codes,getCouponDetailDto())).thenReturn(Mono.error(()->new RuntimeException("FILE_ERROR_COLUMN_EMPTY")));
-        Flux<CouponDetailDto> result = underTest.createCupon(file);
+        Flux<Boolean> result = underTest.createCupon(file);
         CouponDetailDto couponDetailDto1 = getCouponDetailDto3();
 
         StepVerifier.create(result)
@@ -67,12 +67,12 @@ class CuponUseCaseImplTest {
 
     @Test
     void TestUseCase() {
-        Flux<CouponDetailDto> result = underTest.createCupon(file);
+        Flux<Boolean> result = underTest.createCupon(file);
         CouponDetailDto couponDetailDto1 = getCouponDetailDto();
         StepVerifier.create(result)
                 .expectNextMatches(couponDetailDto -> {
                     assertEquals(couponDetailDto1, couponDetailDto);
-                    assertEquals(couponDetailDto.getCode(),couponDetailDto1.getCode());
+                    assertEquals(couponDetailDto1.getCode(),couponDetailDto1.getCode());
                     return false;
                 })
                 .expectComplete()
@@ -86,7 +86,7 @@ class CuponUseCaseImplTest {
         codes.add("1");
         codes.add("2");
         codes.add("3");
-        Flux<CouponDetailDto> result = underTest.createCupon(file);
+        Flux<Boolean> result = underTest.createCupon(file);
         CouponDetailDto couponDetailDto1 = getCouponDetailDto5();
         when(cuponesRepository.validateIsExist(codes,couponDetailDto1)).thenReturn(Mono.just(getCouponDetailDto2()));
         StepVerifier.create(result)
@@ -106,7 +106,7 @@ class CuponUseCaseImplTest {
         codes.add("1");
         codes.add("2");
         codes.add("3");
-        Flux<CouponDetailDto> result = underTest.createCupon(file);
+        Flux<Boolean> result = underTest.createCupon(file);
         CouponDetailDto couponDetailDto1 = getCouponDetailDto6();
         when(cuponesRepository.validateIsExist(codes,couponDetailDto1)).thenReturn(Mono.just(getCouponDetailDto2()));
         StepVerifier.create(result)

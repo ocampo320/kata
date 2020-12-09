@@ -40,10 +40,11 @@ public class CuponUseCaseImpl implements CuponUsecase {
     }
 
     @Override
-    public Flux<CouponDetailDto> createCupon(final String fileBase64) {
+    public Flux<Boolean> createCupon(final String fileBase64) {
 
         Set<String> codes = new HashSet<>();
         return createFluxFrom(fileBase64).skip(1)
+
                 .flatMap(itemModel -> createItemModel(fileBase64)
                         .map(model -> CouponDetailDto.builder()
                                 .code(model.getBono())
@@ -51,8 +52,12 @@ public class CuponUseCaseImpl implements CuponUsecase {
                                 .totalLinesFile(1)
                                 .build())
                         .flatMap(couponDetailDto -> errorOfCoupon(codes, couponDetailDto))
+                        .flatMap(couponDetailDto -> validateDateRegex(couponDetailDto.getDueDate())))
 
-                );
+       // .flatMap(couponDetailDto -> validateDateIsMinor("222"));
+
+
+
 
     }
 
@@ -86,15 +91,12 @@ public class CuponUseCaseImpl implements CuponUsecase {
         return date;
     }
 
-    private Mono errorOfCoupon(Set<String> codes, CouponDetailDto couponDetailDto) {
+    private Mono<CouponDetailDto> errorOfCoupon(Set<String> codes, CouponDetailDto couponDetailDto) {
         return validateIsEmpty(couponDetailDto)
-                .flatMap(couponDetailDto1 -> validateIsEmpty(couponDetailDto1))
-                .flatMap(couponDetailDto1 -> cuponesRepository.validateIsExist(codes, couponDetailDto1)
-                        .flatMap(couponDetailDto2 -> validateDateRegex(couponDetailDto2.getDueDate()))
-                        .flatMap(aBoolean -> validateDateIsMinor(couponDetailDto1.getDueDate())));
-
-
+                .flatMap(couponDetailDto1 -> cuponesRepository.validateIsExist(codes, couponDetailDto1))
+                .flatMap(couponDetailDto1 -> validateIsEmpty(couponDetailDto1));
     }
+
 
     private Mono<CouponDetailDto> validateIsEmpty(CouponDetailDto couponDetailDto) {
         if (couponDetailDto.getDueDate().isBlank()) {
@@ -103,7 +105,6 @@ public class CuponUseCaseImpl implements CuponUsecase {
         return Mono.empty();
 
     }
-
 
 
     private Mono<Boolean> validateDateRegex(String dateForValidate) {
