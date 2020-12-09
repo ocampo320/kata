@@ -4,7 +4,6 @@ import com.example.domain.business.infrastructure.CuponesRepository;
 import com.example.domain.business.model.CouponDetailDto;
 import com.example.domain.business.model.ExperienceErrorsEnum;
 import com.example.domain.business.model.ItemModel;
-import com.example.domain.business.usecase.CuponUsecase;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -43,7 +42,7 @@ class CuponUseCaseImplTest {
         codes.add("2");
         codes.add("3");
         Mockito.when(cuponesRepository.findFile(new Date().toString())).thenReturn(true);
-        Mockito.when(cuponesRepository.validateIsExist(codes,getCouponDetailDto())).thenReturn(Mono.error(()->new RuntimeException("FILE_ERROR_COLUMN_EMPTY")));
+        Mockito.when(cuponesRepository.validateIsExist(codes, getCouponDetailDto())).thenReturn(Mono.error(() -> new RuntimeException("FILE_ERROR_COLUMN_EMPTY")));
         Flux<Boolean> result = underTest.createCupon(file);
         CouponDetailDto couponDetailDto1 = getCouponDetailDto3();
 
@@ -60,7 +59,7 @@ class CuponUseCaseImplTest {
 
 
         verify(cuponesRepository).findFile(new Date().toString());
-        verify(cuponesRepository,times(1)).validateIsExist(codes,getCouponDetailDto2());
+        verify(cuponesRepository, times(1)).validateIsExist(codes, getCouponDetailDto2());
 
 
     }
@@ -72,7 +71,7 @@ class CuponUseCaseImplTest {
         StepVerifier.create(result)
                 .expectNextMatches(couponDetailDto -> {
                     assertEquals(couponDetailDto1, couponDetailDto);
-                    assertEquals(couponDetailDto1.getCode(),couponDetailDto1.getCode());
+                    assertEquals(couponDetailDto1.getCode(), couponDetailDto1.getCode());
                     return false;
                 })
                 .expectComplete()
@@ -80,6 +79,7 @@ class CuponUseCaseImplTest {
 
 
     }
+
     @Test
     void TestUseCase3() {
         Set<String> codes = new HashSet<>();
@@ -88,11 +88,11 @@ class CuponUseCaseImplTest {
         codes.add("3");
         Flux<Boolean> result = underTest.createCupon(file);
         CouponDetailDto couponDetailDto1 = getCouponDetailDto5();
-        when(cuponesRepository.validateIsExist(codes,couponDetailDto1)).thenReturn(Mono.just(getCouponDetailDto2()));
+        when(cuponesRepository.validateIsExist(codes, couponDetailDto1)).thenReturn(Mono.just(getCouponDetailDto2()));
         StepVerifier.create(result)
                 .expectNextMatches(throwable -> {
-                    assertEquals(ExperienceErrorsEnum.class,throwable.getClass());
-                    assertEquals("",codes.iterator().next());
+                    assertEquals(ExperienceErrorsEnum.class, throwable.getClass());
+                    assertEquals("", codes.iterator().next());
                     return true;
                 })
                 .expectComplete()
@@ -100,6 +100,7 @@ class CuponUseCaseImplTest {
 
 
     }
+
     @Test
     void TestUseCase4() {
         Set<String> codes = new HashSet<>();
@@ -108,11 +109,11 @@ class CuponUseCaseImplTest {
         codes.add("3");
         Flux<Boolean> result = underTest.createCupon(file);
         CouponDetailDto couponDetailDto1 = getCouponDetailDto6();
-        when(cuponesRepository.validateIsExist(codes,couponDetailDto1)).thenReturn(Mono.just(getCouponDetailDto2()));
+        when(cuponesRepository.validateIsExist(codes, couponDetailDto1)).thenReturn(Mono.just(getCouponDetailDto2()));
         StepVerifier.create(result)
-                .consumeErrorWith(throwable ->  {
-                    assertEquals(ExperienceErrorsEnum.class,throwable.getMessage());
-                    assertEquals("FILE_ERROR_COLUMN_EMPTY",throwable.getMessage());
+                .consumeErrorWith(throwable -> {
+                    assertEquals(ExperienceErrorsEnum.class, throwable.getMessage());
+                    assertEquals("FILE_ERROR_COLUMN_EMPTY", throwable.getMessage());
 
                 })
                 .verifyLater();
@@ -121,7 +122,7 @@ class CuponUseCaseImplTest {
     }
 
 
-    private ItemModel getItemMode(){
+    private ItemModel getItemMode() {
         return ItemModel.builder()
                 .date(new Date().toString())
                 .bono("bono")
@@ -148,6 +149,7 @@ class CuponUseCaseImplTest {
                 .numberLine(1)
                 .build();
     }
+
     private CouponDetailDto getCouponDetailDto3() {
         return CouponDetailDto.builder()
                 .totalLinesFile(3)
@@ -156,7 +158,9 @@ class CuponUseCaseImplTest {
                 .messageError("FILE_ERROR_DATE_PARSE")
                 .numberLine(1)
                 .build();
-    }    private CouponDetailDto getCouponDetailDto4() {
+    }
+
+    private CouponDetailDto getCouponDetailDto4() {
         return CouponDetailDto.builder()
                 .totalLinesFile(0)
                 .dueDate(null)
@@ -165,6 +169,7 @@ class CuponUseCaseImplTest {
                 .numberLine(0)
                 .build();
     }
+
     private CouponDetailDto getCouponDetailDto5() {
         return CouponDetailDto.builder()
                 .totalLinesFile(2)
@@ -174,6 +179,7 @@ class CuponUseCaseImplTest {
                 .numberLine(1)
                 .build();
     }
+
     private CouponDetailDto getCouponDetailDto6() {
         return CouponDetailDto.builder()
                 .totalLinesFile(0)
@@ -183,7 +189,6 @@ class CuponUseCaseImplTest {
                 .numberLine(0)
                 .build();
     }
-
 
 
 }

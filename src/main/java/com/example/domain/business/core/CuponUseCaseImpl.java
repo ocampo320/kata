@@ -52,11 +52,8 @@ public class CuponUseCaseImpl implements CuponUsecase {
                                 .totalLinesFile(1)
                                 .build())
                         .flatMap(couponDetailDto -> errorOfCoupon(codes, couponDetailDto))
-                        .flatMap(couponDetailDto -> validateDateRegex(couponDetailDto.getDueDate())))
-
-       // .flatMap(couponDetailDto -> validateDateIsMinor("222"));
-
-
+                        .flatMap(couponDetailDto -> validateDateRegex(couponDetailDto.getDueDate()))
+                        .flatMap(couponDetailDto -> validateDateIsMinor("222")));
 
 
     }

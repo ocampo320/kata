@@ -2,25 +2,18 @@
 
 ## Summary ##
 
-En este reto vamos a explorar los aspectos fundamentales de la programación reactiva y funcional, aplicando una refactorización de un método que tiene diferentes condiciones y que de alguna forma es funcional pero se debe mejorar usando mapas y/o otros mecanismos de flujo para volver el método mas funcional.
-
-  
-
+En este reto vamos a explorar los aspectos fundamentales de la programación reactiva y funcional, aplicando una
+refactorización de un método que tiene diferentes condiciones y que de alguna forma es funcional pero se debe mejorar
+usando mapas y/o otros mecanismos de flujo para volver el método mas funcional.
 
 Llevar a cabo las katas para comprender bien acerca de como podríamos resolver esta refactorización.
 
-  
-
-
 ## Requisitos para este reto: ##
 
- *  Conocer los aspectos generales de programación reactiva
- *  Conocer de Flux y Mono
- *  Conocimiento básico de testing usando WebTestClient
- *  Spring boot con WebFlux
-
-  
-
+* Conocer los aspectos generales de programación reactiva
+* Conocer de Flux y Mono
+* Conocimiento básico de testing usando WebTestClient
+* Spring boot con WebFlux
 
 ## Evaluation criteria ##
 

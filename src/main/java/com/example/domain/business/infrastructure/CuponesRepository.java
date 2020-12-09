@@ -8,6 +8,7 @@ import java.util.Set;
 
 public interface CuponesRepository {
     boolean findFile(String dateForValidate) throws ParseException;
+
     Mono<CouponDetailDto> validateIsExist(Set<String> codes, CouponDetailDto couponDetailDto);
 
 
