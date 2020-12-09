@@ -1,7 +1,10 @@
 package com.example.domain.business.core;
 
 import com.example.domain.business.infrastructure.CuponesRepository;
-import com.example.domain.business.model.*;
+import com.example.domain.business.model.CouponDetailDto;
+import com.example.domain.business.model.ExperienceErrorsEnum;
+import com.example.domain.business.model.FileCSVEnum;
+import com.example.domain.business.model.ItemModel;
 import com.example.domain.business.usecase.CuponUsecase;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
@@ -12,8 +15,6 @@ import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.InputStreamReader;
 import java.util.*;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
@@ -21,7 +22,7 @@ import java.util.stream.Stream;
 @Log
 @RequiredArgsConstructor
 public class CuponUseCaseImpl implements CuponUsecase {
-
+    private static final String EMPTY_STRING = "EMPTY_STRING";
     private final CuponesRepository cuponesRepository;
 
     private static Flux<String> createFluxFrom(String fileBase64) {
@@ -43,7 +44,7 @@ public class CuponUseCaseImpl implements CuponUsecase {
 
         Set<String> codes = new HashSet<>();
         return createFluxFrom(fileBase64).skip(1)
-                .flatMap(HelperKata -> createItemModel(fileBase64)
+                .flatMap(itemModel -> createItemModel(fileBase64)
                         .map(model -> CouponDetailDto.builder()
                                 .code(model.getBono())
                                 .dueDate(model.getDate())
@@ -69,17 +70,19 @@ public class CuponUseCaseImpl implements CuponUsecase {
 
 
     private String getBono(Optional<List<String>> options) {
-        var bono = options.filter(colums -> !colums.isEmpty())
+        String bono;
+        bono = options.filter(colums -> !colums.isEmpty())
                 .map(colums -> colums.get(0))
-                .orElse("EMPTY_STRING");
+                .orElse(EMPTY_STRING);
         return bono;
     }
 
 
     private String getDate(Optional<List<String>> options) {
-        var date = options.filter(colums -> !colums.isEmpty() && colums.size() > 1)
+        String date;
+        date = options.filter(colums -> !colums.isEmpty() && colums.size() > 1)
                 .map(colums -> colums.get(1))
-                .orElse("EMPTY_STRING");
+                .orElse(EMPTY_STRING);
         return date;
     }
 

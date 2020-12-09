@@ -43,7 +43,7 @@ class CuponUseCaseImplTest {
         codes.add("2");
         codes.add("3");
         Mockito.when(cuponesRepository.findFile(new Date().toString())).thenReturn(true);
-        Mockito.when(cuponesRepository.validateIsExist(codes,getCouponDetailDto())).thenReturn(Mono.just(getCouponDetailDto2()));
+        Mockito.when(cuponesRepository.validateIsExist(codes,getCouponDetailDto())).thenReturn(Mono.error(()->new RuntimeException("FILE_ERROR_COLUMN_EMPTY")));
         Flux<CouponDetailDto> result = underTest.createCupon(file);
         CouponDetailDto couponDetailDto1 = getCouponDetailDto3();
 
@@ -92,10 +92,29 @@ class CuponUseCaseImplTest {
         StepVerifier.create(result)
                 .expectNextMatches(throwable -> {
                     assertEquals(ExperienceErrorsEnum.class,throwable.getClass());
-                    assertEquals("1",codes.iterator().next());
+                    assertEquals("",codes.iterator().next());
                     return true;
                 })
                 .expectComplete()
+                .verifyLater();
+
+
+    }
+    @Test
+    void TestUseCase4() {
+        Set<String> codes = new HashSet<>();
+        codes.add("1");
+        codes.add("2");
+        codes.add("3");
+        Flux<CouponDetailDto> result = underTest.createCupon(file);
+        CouponDetailDto couponDetailDto1 = getCouponDetailDto6();
+        when(cuponesRepository.validateIsExist(codes,couponDetailDto1)).thenReturn(Mono.just(getCouponDetailDto2()));
+        StepVerifier.create(result)
+                .consumeErrorWith(throwable ->  {
+                    assertEquals(ExperienceErrorsEnum.class,throwable.getMessage());
+                    assertEquals("FILE_ERROR_COLUMN_EMPTY",throwable.getMessage());
+
+                })
                 .verifyLater();
 
 
@@ -153,6 +172,15 @@ class CuponUseCaseImplTest {
                 .code("1")
                 .messageError("FILE_ERROR_DATE_PARSE")
                 .numberLine(1)
+                .build();
+    }
+    private CouponDetailDto getCouponDetailDto6() {
+        return CouponDetailDto.builder()
+                .totalLinesFile(0)
+                .dueDate("")
+                .code("0")
+                .messageError("FILE_ERROR_COLUMN_EMPTY")
+                .numberLine(0)
                 .build();
     }
 
