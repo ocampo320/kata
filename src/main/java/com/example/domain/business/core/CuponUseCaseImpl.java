@@ -53,7 +53,7 @@ public class CuponUseCaseImpl implements CuponUsecase {
                                 .build())
                         .flatMap(couponDetailDto -> errorOfCoupon(codes, couponDetailDto))
                         .flatMap(couponDetailDto -> validateDateRegex(couponDetailDto.getDueDate()))
-                        .flatMap(couponDetailDto -> validateDateIsMinor("222")));
+                       );
 
 
     }
@@ -118,14 +118,7 @@ public class CuponUseCaseImpl implements CuponUsecase {
 
     }
 
-    private Mono<Boolean> validateDateIsMinor(String dateForValidate) {
-        try {
-            if (cuponesRepository.findFile(dateForValidate)) return Mono.just(true);
-        } catch (Exception ignored) {
-            log.warning(ExperienceErrorsEnum.FILE_DATE_IS_MINOR_OR_EQUALS.toString());
-        }
-        return Mono.just(false);
-    }
+
 
 
 }
